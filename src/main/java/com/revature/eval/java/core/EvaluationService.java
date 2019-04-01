@@ -1,8 +1,13 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EvaluationService {
 
@@ -31,7 +36,16 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		String acronym = "";
+		acronym = acronym + phrase.toUpperCase().charAt(0);
+		
+        for (int i = 1; i < phrase.length() - 1; i++) {
+            if (phrase.charAt(i) == ' ' || phrase.charAt(i) == '-') {
+            	acronym = acronym + phrase.toUpperCase().charAt(i + 1);
+            	}
+            }
+		return acronym;
 	}
 
 	/**
@@ -85,16 +99,26 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
+			if(this.sideOne == this.sideTwo && this.sideOne == this.sideThree) {
+			return true;
+		} else
 			return false;
+			
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if(this.sideOne == this.sideTwo || this.sideOne == this.sideThree || this.sideTwo == this.sideThree) {
+			return true;
+		} else
+				return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			if((this.sideOne != this.sideTwo) && this.sideTwo != this.sideThree) {
+			return true;
+		}else
 			return false;
 		}
 
@@ -117,7 +141,58 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		int score = 0;
+		String upperWord = string.toUpperCase();
+		
+		for(int i = 0; i < upperWord.length(); i++) {
+			char letterWithValue = upperWord.charAt(i);
+			switch (letterWithValue) {
+				case 'A':
+				case 'E':
+				case 'I':
+				case 'O':
+				case 'U':
+				case 'L':
+				case 'N':
+				case 'R':
+				case 'S':
+				case 'T':
+					score = score + 1;
+					break;
+				case 'D':
+				case 'G':
+					score = score + 2;
+					break;
+				case 'B':
+				case 'C':
+				case 'M':
+				case 'P':
+					score = score + 3;
+					break;
+				case 'F':
+				case 'H':
+				case 'V':
+				case 'W':
+				case 'Y':
+					score = score + 4;
+					break;
+				case 'K':
+					score = score + 5;
+					break;
+				case 'J':
+				case 'X':
+					score = score + 8;
+					break;
+				case 'Q':
+				case 'Z':
+					score = score + 10;
+					break;
+				}
+			
+		}
+		
+		return score;
 	}
 
 	/**
@@ -153,7 +228,18 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		//System.out.println(string);
+		
+		string = string.replaceAll("[^0-9]", "");
+		
+		if(string.charAt(0)== 1) {
+			string = string.substring(1);
+		}
+		
+		if((string.length() < 11 ) && (string.length() > 9)) {
+			return string;
+		}else 
+			throw new IllegalArgumentException();
 	}
 
 	/**
@@ -267,7 +353,22 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int sum = 0;
+		//returns a string repres of int argument
+		String number = String.valueOf(input);
+		//gets the length of the converted int to string 
+		int numLength = number.length();
+		
+		
+		for(int i = 0; i< numLength; i++) {
+			//
+			int digit = Character.digit(number.charAt(i),10);
+			
+			sum = (int) (sum + Math.pow(digit, numLength));
+			
+		}
+		
+		return sum==input;
 	}
 
 	/**
@@ -282,7 +383,21 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> primes = new LinkedList<>();
+		
+		long factor = 2;
+		//long x = l % factor;
+		//System.out.println(x);
+		
+		while(l > 1) {
+			while(l % factor == 0) {
+				primes.add(factor);
+				l = l/factor;
+			}
+			factor++;
+		}
+		//System.out.println(primes);
+		return primes;
 	}
 
 	/**
@@ -340,6 +455,8 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
+		
+		
 		return 0;
 	}
 
@@ -375,9 +492,34 @@ public class EvaluationService {
 		 * @param string
 		 * @return
 		 */
+		
+		static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+		static String backAlphabet = "zyxwvutsrqponmlkjihgfedcba";
+		
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			string= string.toLowerCase();
+			string = string.replaceAll("[^a-z0-9]", "");
+			String word = "";
+			
+			char[] toChar = new char[string.length()];
+			
+			for(int i = 0; i < string.length();i++) {
+				toChar[i] = string.charAt(i);
+				
+				for(int j = 0; j < 26;j++) {
+					
+					if(toChar[i] == alphabet.charAt(j)) {
+						word = word + backAlphabet.charAt(j);
+					}
+				}
+				
+			}
+			
+			System.out.println(toChar);
+			
+			
+			return word;
 		}
 
 		/**
@@ -388,7 +530,20 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			string= string.toLowerCase();
+			string = string.replaceAll("[^a-z0-9]", "");
+			String word = "";
+			char[] toChar = new char[string.length()];
+			for(int i = 0;i < string.length();i++) {
+				toChar[i] = string.charAt(i);
+				for(int j = 0;j<26;j++) {
+					if(toChar[i]== backAlphabet.charAt(j)) {
+						word = word + alphabet.charAt(j);
+					}
+				}
+			}
+			
+			return word;
 		}
 	}
 
@@ -434,7 +589,19 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		
+		String newInput = string.toLowerCase().replaceAll("[^a-z]", "");
+		//System.out.println(newInput);
+		char[] newChar = newInput.toCharArray();
+		
+		Set<Character> chars = new HashSet<Character>();
+		//System.out.println(chars);
+		
+		for(char c: newChar) {
+			chars.add(c);
+		}
+		//System.out.println(chars);
+		return chars.size() == 26;
 	}
 
 	/**
@@ -465,7 +632,18 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int sum = 0;
+		//numbers less than int i
+		for(int j = 0;j < i;j++) {
+			for(int num: set) {
+				if((num != 0) && (j % num ==0 )){
+					sum = sum + j;
+					break;
+				}
+			}
+		}
+		//System.out.println(sum);
+		return sum;
 	}
 
 	/**
@@ -506,7 +684,35 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		//remove spaces
+		string = string.replaceAll(" ", "");
+		
+		//System.out.println(string);
+		int sum = 0;
+		boolean second = false;
+		//Start at end of list
+		for(int i=string.length()-1;i >= 0;i--) {
+			Character nextChar = string.charAt(i);
+			if(!Character.isDigit(nextChar)) {
+				return false;
+			}
+			int digit = Integer.parseInt(nextChar.toString());
+			
+			if(second) {
+				digit = digit * 2;
+				if(digit > 9) {
+					digit = digit - 9;
+				}
+			}
+			sum = sum + digit;
+			//to true on odd runs through the loop
+			second = !second;
+			//System.out.println(sum);
+			
+		}
+		
+		
+		return (sum % 10 == 0);
 	}
 
 	/**
@@ -538,7 +744,30 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		Iterator<String> elements = Arrays.asList(string.replace("What is ", "")
+					.replace("?", "").replaceAll(" by ", " ").split(" ")).iterator();
+		//System.out.println(elements);
+		int total = Integer.parseInt(elements.next());
+		//System.out.println(total);
+		
+		while (elements.hasNext())
+			switch(elements.next()) {
+			case "plus":
+			total = total + Integer.parseInt(elements.next());
+			break;
+			case "minus":
+				total = total - Integer.parseInt(elements.next());
+				break;
+			case "divided":
+				total = total / Integer.parseInt(elements.next());
+				break;
+			case "multiplied":
+				total = total * Integer.parseInt(elements.next());
+				break;
+			default:
+					break;
+			}
+		return total;
 	}
 
 }
